@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Vacantes Publicadas</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Reporte de Vacantes Publicadas</h2>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Resumen de Vacantes</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Título del Puesto</th>
+                        <th>Fecha de Publicación</th>
+                        <th>Aspirantes Interesados</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="vacante : ${reporteVacantes}">
+                        <td th:text="${vacante.titulo}"></td>
+                        <td th:text="${#temporals.format(vacante.fechaPublicacion, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${vacante.numeroAspirantes}"></td>
+                        <td>
+                            <span th:if="${vacante.estado == 'PUBLICADA'}" class="badge bg-success">Abierta</span>
+                            <span th:if="${vacante.estado == 'CERRADA'}" class="badge bg-danger">Cerrada</span>
+                            <span th:if="${vacante.estado == 'EN_PROCESO'}" class="badge bg-warning">En Proceso</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/empleador/vacantes}" class="btn btn-secondary mt-3">Volver a Vacantes</a>
+</div>
+</body>
+</html>

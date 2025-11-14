@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Desempeño de Vacantes</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Reporte de Desempeño de Vacantes</h2>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Métricas de Rendimiento</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Vacante</th>
+                        <th>Total Postulaciones</th>
+                        <th>Candidatos Contratados</th>
+                        <th>% de Contratación</th>
+                        <th>Tiempo Promedio (días)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="desempenio : ${desempenioVacantes}">
+                        <td th:text="${desempenio.tituloVacante}"></td>
+                        <td th:text="${desempenio.totalPostulaciones}"></td>
+                        <td th:text="${desempenio.candidatosContratados}"></td>
+                        <td>
+                            <span th:text="${#numbers.formatDecimal(desempenio.porcentajeContratacion, 1, 2)} + '%'"></span>
+                        </td>
+                        <td>
+                                    <span th:if="${desempenio.tiempoPromedioDias != null}"
+                                          th:text="${#numbers.formatDecimal(desempenio.tiempoPromedioDias, 1, 1)}"></span>
+                            <span th:if="${desempenio.tiempoPromedioDias == null}">-</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/empleador/vacantes}" class="btn btn-secondary mt-3">Volver a Vacantes</a>
+</div>
+</body>
+</html>

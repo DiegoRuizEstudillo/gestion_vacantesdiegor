@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aspirantes por Vacante</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Reporte de Aspirantes por Vacante</h2>
+    <p class="text-muted">Vacante ID: <span th:text="${vacanteId}"></span></p>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Lista de Aspirantes</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nombre del Aspirante</th>
+                        <th>Correo de Contacto</th>
+                        <th>Fecha de Postulación</th>
+                        <th>Estado del Proceso</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="aspirante : ${aspirantes}">
+                        <td th:text="${aspirante.nombreAspirante}"></td>
+                        <td th:text="${aspirante.email}"></td>
+                        <td th:text="${#temporals.format(aspirante.fechaPostulacion, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td>
+                                    <span th:switch="${aspirante.estado}">
+                                        <span th:case="PENDIENTE" class="badge bg-warning">Pendiente</span>
+                                        <span th:case="ENTREVISTADO" class="badge bg-info">Entrevistado</span>
+                                        <span th:case="CONTRATADO" class="badge bg-success">Contratado</span>
+                                        <span th:case="RECHAZADO" class="badge bg-danger">Rechazado</span>
+                                    </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/empleador/vacantes}" class="btn btn-secondary mt-3">Volver a Vacantes</a>
+</div>
+</body>
+</html>

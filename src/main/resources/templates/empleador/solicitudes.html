@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitudes Recibidas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Solicitudes Recibidas</h2>
+        <a th:href="@{/auth/bienvenida/empleador}" class="btn btn-secondary">← Volver</a>
+    </div>
+
+    <!-- Mensajes -->
+    <div th:if="${param.success != null}" class="alert alert-success">
+        <span th:text="${param.success}">Operación exitosa</span>
+    </div>
+
+    <div th:if="${solicitudes.empty}" class="alert alert-info">
+        No hay solicitudes recibidas.
+    </div>
+
+    <div th:each="solicitud : ${solicitudes}" class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="${solicitud.vacante.titulo}">Título de la vacante</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Información del Aspirante</h6>
+                    <p><strong>Nombre:</strong> <span th:text="${solicitud.aspirante.nombre}">Nombre</span></p>
+                    <p><strong>Correo:</strong> <span th:text="${solicitud.aspirante.correo}">Correo</span></p>
+                    <p><strong>Habilidades:</strong> <span th:text="${solicitud.habilidadesUsadas}">Habilidades</span></p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Información de la Vacante</h6>
+                    <p><strong>Empresa:</strong> <span th:text="${solicitud.vacante.empleador.empresa}">Empresa</span></p>
+                    <p><strong>Salario:</strong> $<span th:text="${solicitud.vacante.salario}">0</span></p>
+                    <p><strong>Ubicación:</strong> <span th:text="${solicitud.vacante.ubicacionId}">Ubicación</span></p>
+                    <p><strong>Fecha de solicitud:</strong>
+                        <span th:text="${#temporals.format(solicitud.fechaSolicitud, 'dd/MM/yyyy HH:mm')}">Fecha</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <strong>Estado: </strong>
+                <span th:if="${solicitud.estado.name() == 'PENDIENTE'}" class="badge bg-warning">PENDIENTE</span>
+                <span th:if="${solicitud.estado.name() == 'APROBADA'}" class="badge bg-success">APROBADA</span>
+                <span th:if="${solicitud.estado.name() == 'RECHAZADA'}" class="badge bg-danger">RECHAZADA</span>
+            </div>
+
+            <!-- Botones de acción (solo para solicitudes pendientes) - CORREGIDO -->
+            <div th:if="${solicitud.estado.name() == 'PENDIENTE'}" class="mt-3">
+                <form th:action="@{/empleador/solicitudes/aprobar}" method="post" class="d-inline">
+                    <input type="hidden" name="solicitudId" th:value="${solicitud.id}">
+                    <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                </form>
+
+                <form th:action="@{/empleador/solicitudes/rechazar}" method="post" class="d-inline ms-2">
+                    <input type="hidden" name="solicitudId" th:value="${solicitud.id}">
+                    <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                </form>
+            </div>
+
+            <!-- Mensaje "ya procesada" - CORREGIDO -->
+            <div th:if="${solicitud.estado.name() != 'PENDIENTE'}" class="mt-3">
+                <small class="text-muted">Esta solicitud ya ha sido procesada</small>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
