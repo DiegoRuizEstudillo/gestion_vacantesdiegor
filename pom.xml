@@ -97,9 +97,10 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.example.GestionVacantesdiegorApplication</mainClass>
+					<mainClass>com.example.gestion_vacantesdiegor.GestionVacantesdiegorApplication</mainClass>
 				</configuration>
 			</plugin>
+
 
 			<!-- Necesario para Java 21 -->
 			<plugin>
